@@ -36,37 +36,52 @@ Exemplo de nome: **Combinação incomum: variação relativa de valor acima da m
 
 O nome descreve um padrão, não uma fraude comprovada ou necessariamente inédita. O escore não é probabilidade de corrupção. Ausência de alerta não comprova regularidade. Cada hipótese apresenta fonte, campos, modelo, grupo, alternativas e próximos passos. Grupos podem reunir objetos diferentes: não são comparações de preços unitários. Precisão real de detecção ainda não foi medida com base revisada por especialistas; testes de software não substituem essa validação.
 
-## Fonte e cobertura
+## Fontes e cobertura
 
-Fonte implementada: [API oficial de consulta do PNCP](https://pncp.gov.br/api/consulta/swagger-ui/index.html). [Dados abertos](https://www.gov.br/pncp/pt-br/acesso-a-informacao/copy_of_dados-abertos).
+- PNCP: publicações dos últimos sete dias, fila rotativa de 20 contratos antigos por ciclo, aditivos, arquivos e histórico oficial.
+- Obrasgov: cadastro nacional, varredura retomável de até 2.000 obras por ciclo; execução física, contratos e fases financeiras para até 10 obras por ciclo. A cobertura cresce gradualmente, não é integral.
+- Portal da Transparência: conector para empenhos, liquidações, pagamentos e emendas. Depende do segredo `TRANSPARENCIA_API_KEY` nas configurações do repositório. Sem a chave, o painel mostra a indisponibilidade. Nunca inclua a chave em código ou relatórios.
 
-A consulta é por **data de publicação**, não por todas as alterações. Reconsultar o mesmo período preserva as versões alteradas observadas. Ainda falta acompanhamento individual permanente de contratos antigos. Valor contratado não equivale a dinheiro pago.
+Fontes oficiais: [PNCP](https://pncp.gov.br/manual/pt-br/latest/singlehtml/), [Obrasgov](https://www.gov.br/obrasgov/pt-br/ferramentas-de-gestao-e-transparencia/api-de-dados-obrasgov-br_novo), [Portal da Transparência](https://api.portaldatransparencia.gov.br/swagger-ui/index.html).
 
-Não há integração de pagamentos, medições, emendas, SINAPI/SICRO, execução física, PDFs ou atribuição a mandatos nesta versão. Não há painel público nem serviço com garantia de disponibilidade. Nenhuma acusação é publicada automaticamente. Conferir documentos, contexto, comparabilidade e dados pessoais antes de divulgar conclusões.
+## Painel e atualização
 
-## Atualização automática
+A pasta `web` contém o painel público, sem dependências de compilação. Busca por cidade, órgão, fornecedor e objeto; filtro de UF; alertas, fontes, histórico e exportação da seleção. Lê `current.json` no ramo `data` deste repositório. Atualiza a leitura a cada cinco minutos; a coleta ocorre a cada seis horas, conforme disponibilidade das fontes e do GitHub. Não é transmissão instantânea.
 
-O workflow **Monitorar contratos**, em GitHub Actions, agenda coleta a cada seis horas e permite execução manual. Reconsulta os últimos sete dias e disponibiliza CSV/JSON nos artefatos de cada execução por 30 dias. Os resultados são hipóteses exploratórias não revisadas, não denúncias.
+O workflow **Monitorar contratos** coleta, enriquece e exporta. Preserva versões originais no SQLite e publica um checkpoint comprimido, com SHA-256, no ramo `data`. Cada commit mantém o histórico anterior. Restauração valida checksum e integridade. Falha de restauração impede publicação substituta. Cache serve apenas à migração inicial; artefatos duram 30 dias.
 
-O GitHub pode atrasar ou desativar agendamentos. O histórico entre execuções usa cache, que pode ser eliminado: **não é backup nem arquivo permanente**. Produção exige banco persistente, backups e alertas operacionais. O cache pode conter registros públicos originais; não adicionar dados privados.
-
-Alternativa local:
+O arquivo comprimido tem limite operacional de 80 MB e cada relatório 90 MB. Ao atingir o limite, a publicação falha preservando o último checkpoint remoto. Para expansão nacional sustentada será necessário migrar para banco/armazenamento dedicado; Git não é arquivo ilimitado. Agendamentos podem atrasar ou ser desativados pelo GitHub. Acompanhe **Actions** e a idade da última atualização no painel. Notificações externas dependem das preferências do proprietário no GitHub.
 
 ```powershell
-.venv\Scripts\python monitor.py --interval-minutes 360 --lookback-days 7
+python manage.py enrich --contracts 20 --work-pages 10 --work-details 10
+python manage.py export
+python manage.py backup data/backup.sqlite3.gz
+python manage.py restore data/backup.sqlite3.gz
+python -m http.server 8080 --directory web
 ```
 
-Exige computador ligado e rede. Não instala serviço nem inicia após reiniciar. Parar com Ctrl+C. A data segue America/Fortaleza (UTC−3). Falhas ficam no banco e terminal; o próximo ciclo tenta novamente. Não executar dois monitores sobre o mesmo banco.
+Feche outras conexões ao banco antes de restaurar. O monitor local requer computador ligado; o GitHub Actions funciona independentemente dele.
 
-## Próximas etapas
+## Revisão e comparação de preços
 
-1. Banco persistente, backups, alertas operacionais e recuperação de falhas.
-2. Acompanhamento de contratos antigos, aditivos e justificativas.
-3. Painel de busca, histórico e cobertura para o público.
-4. Pagamentos e obras, distinguindo empenho, liquidação, pagamento e contrato.
-5. Calibração da IA com revisão humana e métricas de falsos positivos.
-6. Mais fontes estaduais e municipais, preços comparáveis e documentos.
+Revisão administrativa local, sem formulário público que permita adulterar resultados:
+
+```powershell
+python manage.py review ID_DO_ALERTA SHA256 supported --note "Evidências e justificativa da revisão"
+```
+
+Rótulos: `supported`, `false_positive`, `inconclusive`. A revisão fica vinculada ao alerta e à versão dos dados; mudanças tornam revisões antigas obsoletas. O painel mostra contagens e proporção entre hipóteses revisadas. Isso não mede precisão de detecção de corrupção nem elimina viés de seleção.
+
+`python manage.py compare-prices arquivo.json` compara `item` e `reference`. Ambos exigem `item_code`, `specification`, `unit`, `uf`, `month`, `tax_regime`, `price_basis`, `source` e `unit_price`. Os sete primeiros campos precisam coincidir. Não existe comparação automática confiável apenas pelo valor total de um contrato. SINAPI/SICRO e planilhas de quantidades ainda precisam de aquisição, normalização e validação técnica antes de alimentar este comparador.
+
+## Limites e trabalho dependente de dados/acessos
+
+Não prometemos detectar toda corrupção. A IA propõe nomes descritivos para combinações atípicas, sem afirmar que descobriu um novo crime. Contratos com campos coincidentes geram hipótese de duplicidade, não prova de pagamento duplicado.
+
+Ainda dependem de fontes e validação: cobertura histórica completa, todas as bases estaduais e municipais, leitura e validação de PDFs/medições, comparação automática SINAPI/SICRO, vínculos societários e atribuição fundamentada a mandatos. Não inferimos responsabilidade pessoal pela data do contrato, nem vinculamos pagamentos a contratos apenas pelo nome do fornecedor. A API CGU pode publicar documentos com atraso; a fila implementada não garante capturar toda alteração retroativa.
+
+Dados públicos podem conter informações pessoais. O painel não exporta CPF nem nome de fornecedor pessoa física. O checkpoint preserva registros originais das APIs; sua publicação deve permanecer restrita a fontes públicas autorizadas. Não adicionar dados privados.
 
 ## Contribuir
 
-Cada regra precisa de fonte, explicação, exemplos legítimos que possam dispará-la, testes de dados ausentes e critérios de revisão. Não incluir credenciais, dados coletados ou acusações nos commits. Hipóteses devem ser chamadas de hipóteses; discussões partidárias não substituem evidências.
+Cada indicador precisa de fonte, explicação, exemplos legítimos que possam dispará-lo, testes de dados ausentes e critérios de revisão. Não incluir credenciais ou acusações nos commits. Hipóteses devem ser chamadas de hipóteses; discussões partidárias não substituem evidências.
