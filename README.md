@@ -46,6 +46,8 @@ Fontes oficiais: [PNCP](https://pncp.gov.br/manual/pt-br/latest/singlehtml/), [O
 
 ## Painel e atualização
 
+[Abrir o painel público](https://observatorio-brasil-renvenge.jose-breno1.chatgpt.site).
+
 A pasta `web` contém o painel público, sem dependências de compilação. Busca por cidade, órgão, fornecedor e objeto; filtro de UF; alertas, fontes, histórico e exportação da seleção. Lê `current.json` no ramo `data` deste repositório. Atualiza a leitura a cada cinco minutos; a coleta ocorre a cada seis horas, conforme disponibilidade das fontes e do GitHub. Não é transmissão instantânea.
 
 O workflow **Monitorar contratos** coleta, enriquece e exporta. Preserva versões originais no SQLite e publica um checkpoint comprimido, com SHA-256, no ramo `data`. Cada commit mantém o histórico anterior. Restauração valida checksum e integridade. Falha de restauração impede publicação substituta. Cache serve apenas à migração inicial; artefatos duram 30 dias.
