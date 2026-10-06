@@ -1,0 +1,70 @@
+name: Diagnosticar conexao CGU
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Testar autenticação e consulta sem revelar o segredo
+        env:
+          TRANSPARENCIA_API_KEY: ${{ secrets.TRANSPARENCIA_API_KEY }}
+        shell: python
+        run: |
+          import os, json, time
+          from datetime import datetime, timedelta, timezone
+          from urllib.request import Request, build_opener, HTTPRedirectHandler
+          from urllib.error import HTTPError, URLError
+          from urllib.parse import urlencode
+
+          class NoRedirect(HTTPRedirectHandler):
+              def redirect_request(self, *args, **kwargs):
+                  return None
+
+          key = os.environ.get('TRANSPARENCIA_API_KEY', '').strip()
+          if not key:
+              print('RESULTADO: segredo ausente ou vazio.')
+              raise SystemExit(1)
+          if any(ord(c) < 33 or ord(c) > 126 for c in key):
+              print('RESULTADO: segredo contém caracteres incompatíveis com um cabeçalho HTTP. Valor não exibido.')
+              raise SystemExit(1)
+          today = datetime.now(timezone(timedelta(hours=-3))).date()
+          cases = [
+              ('Autenticação em emendas', 'emendas', {'ano': today.year, 'pagina': 1}),
+              ('Consulta atual de despesas', 'despesas/documentos', {'dataEmissao': str((today-timedelta(days=1)).strftime('%d/%m/%Y')), 'fase': 1, 'pagina': 1})
+          ]
+          report = ['# Diagnóstico CGU', '', 'A chave e o conteúdo das respostas não são registrados.', '']
+          failed = False
+          for label, endpoint, params in cases:
+              request = Request('https://api.portaldatransparencia.gov.br/api-de-dados/' + endpoint + '?' + urlencode(params),
+                  headers={'chave-api-dados': key, 'Accept': 'application/json', 'User-Agent': 'ObservatorioBrasil/0.3'})
+              try:
+                  with build_opener(NoRedirect()).open(request, timeout=40) as response:
+                      raw = response.read(2_000_001)
+                      if len(raw) > 2_000_000:
+                          raise ValueError('limite')
+                      payload = json.loads(raw)
+                      if not isinstance(payload, list):
+                          raise ValueError('formato')
+                      result = f'HTTP {response.status}; lista válida; {len(payload)} registros na primeira página.'
+              except HTTPError as exc:
+                  explanations = {400: 'Consulta rejeitada: conferir filtros obrigatórios.',
+                      401: 'Autenticação não aceita.', 403: 'Acesso negado: chave ou política de acesso do serviço.',
+                      404: 'Endpoint não encontrado.', 429: 'Limite de consultas atingido.'}
+                  result = f'HTTP {exc.code}; ' + explanations.get(exc.code, 'Resposta HTTP inesperada do serviço.')
+                  failed = True
+              except (URLError, TimeoutError):
+                  result = 'Falha de rede ou tempo limite; não prova chave inválida.'
+                  failed = True
+              except Exception:
+                  result = 'Resposta incompatível; conteúdo omitido.'
+                  failed = True
+              line = label + ': ' + result
+              print(line, flush=True)
+              report.append('- ' + line)
+              time.sleep(2)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as summary:
+              summary.write('\n'.join(report) + '\n')
+          raise SystemExit(1 if failed else 0)
