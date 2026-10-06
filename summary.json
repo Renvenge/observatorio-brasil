@@ -1,0 +1,112 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-10-06T10:41:40.080820+00:00",
+  "contracts": 40725,
+  "works": 2000,
+  "findings": 1831,
+  "runs": [
+    {
+      "id": 3,
+      "started": "2026-10-06T10:20:48.048229+00:00",
+      "finished": "2026-10-06T10:26:35.081336+00:00",
+      "start": "2026-09-30",
+      "end": "2026-10-06",
+      "status": "complete",
+      "records": 33372,
+      "pages": 67,
+      "error": null
+    },
+    {
+      "id": 2,
+      "started": "2026-10-06T06:32:48.617998+00:00",
+      "finished": "2026-10-06T06:39:57.411942+00:00",
+      "start": "2026-09-30",
+      "end": "2026-10-06",
+      "status": "complete",
+      "records": 33344,
+      "pages": 67,
+      "error": null
+    },
+    {
+      "id": 1,
+      "started": "2026-10-06T00:19:48.251898+00:00",
+      "finished": "2026-10-06T00:27:57.794601+00:00",
+      "start": "2026-09-29",
+      "end": "2026-10-05",
+      "status": "complete",
+      "records": 40516,
+      "pages": 82,
+      "error": null
+    }
+  ],
+  "sources": [
+    {
+      "name": "cgu",
+      "checked_at": "2026-10-06T10:41:24.731777+00:00",
+      "status": "credentials_required",
+      "message": "Aguardando TRANSPARENCIA_API_KEY no ambiente/GitHub Secrets. Nenhum pagamento foi inferido.",
+      "metadata": {}
+    },
+    {
+      "name": "obras",
+      "checked_at": "2026-10-06T10:41:09.752067+00:00",
+      "status": "partial",
+      "message": "Varredura incremental do cadastro; paginação não é fotografia transacional.",
+      "metadata": {
+        "collected": 2000,
+        "total_reported": 154178,
+        "next_page": 11,
+        "scan_pass_finished": false
+      }
+    },
+    {
+      "name": "obras_execucao",
+      "checked_at": "2026-10-06T10:41:24.724508+00:00",
+      "status": "partial",
+      "message": "Fila de enriquecimento por identificador oficial. Empenho, liquidado e pago são campos distintos.",
+      "metadata": {
+        "attempted": 10,
+        "errors": 0,
+        "with_financial_data": 10
+      }
+    },
+    {
+      "name": "pncp_revisitas",
+      "checked_at": "2026-10-06T10:40:28.664006+00:00",
+      "status": "partial",
+      "message": "Fila rotativa de contratos já conhecidos; falhas não apagam registros anteriores.",
+      "metadata": {
+        "attempted": 20,
+        "success": 20,
+        "ever_revisited": 20,
+        "total": 40725,
+        "errors": []
+      }
+    }
+  ],
+  "calibration": {
+    "counts": {
+      "supported": 0,
+      "false_positive": 0,
+      "inconclusive": 0,
+      "stale": 0
+    },
+    "total_findings": 1831,
+    "precision_among_reviewed": null,
+    "limitation": "Proporção de hipóteses sustentadas entre revisadas, não precisão de detecção de corrupção. Amostra pode ter viés. Sensibilidade/recall não medido."
+  },
+  "ai": {
+    "method": "Detecção exploratória sem supervisão; nomes descritivos automáticos.",
+    "limitations": "Não detecta toda fraude, não prova crime ou novidade de um esquema. Grupos não garantem objetos equivalentes; não é comparação de preços unitários.",
+    "assessed": 35559,
+    "excluded_missing_data": 1493,
+    "excluded_small_or_constant_groups": 3673
+  },
+  "limitations": [
+    "Cobertura depende dos períodos consultados e das fontes disponíveis.",
+    "Alertas são hipóteses, não corrupção comprovada.",
+    "Valor contratado, investimento previsto e pagamento não são somáveis.",
+    "Mudança de gestão não estabelece responsabilidade pessoal."
+  ],
+  "repository": "https://github.com/Renvenge/observatorio-brasil"
+}
