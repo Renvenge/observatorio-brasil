@@ -4,14 +4,14 @@ on:
   schedule:
     - cron: '23 */6 * * *'
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: monitor-pncp
   cancel-in-progress: false
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -24,8 +24,24 @@ jobs:
           path: data
           key: pncp-history-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: pncp-history-
+      - name: Restaurar checkpoint durável e verificar integridade
+        id: restore
+        run: python archive_state.py restore
       - name: Coletar janela recente e analisar
+        id: collect
         run: python monitor.py --once --lookback-days 7
+      - name: Atualizar contratos conhecidos, obras e fontes financeiras
+        if: ${{ !cancelled() && steps.restore.outcome == 'success' }}
+        env:
+          TRANSPARENCIA_API_KEY: ${{ secrets.TRANSPARENCIA_API_KEY }}
+        run: python manage.py enrich --contracts 20 --work-pages 10 --work-details 10
+      - name: Exportar painel com cobertura e evidências
+        if: ${{ !cancelled() && steps.restore.outcome == 'success' }}
+        id: export
+        run: python manage.py export
+      - name: Publicar checkpoint e dados do painel
+        if: ${{ !cancelled() && steps.restore.outcome == 'success' && steps.export.outcome == 'success' }}
+        run: python archive_state.py save
       - name: Guardar histórico para o próximo ciclo
         if: always()
         uses: actions/cache/save@v4
