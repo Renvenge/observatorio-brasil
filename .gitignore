@@ -5,3 +5,4 @@ data/
 reports/
 .env
 *.sqlite3*
+web/current.json
