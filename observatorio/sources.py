@@ -6,6 +6,7 @@ import re
 import time
 from datetime import date, timedelta
 from urllib.parse import urlencode
+from urllib.error import HTTPError
 
 from .core import current, now, request_json, save
 
@@ -168,23 +169,32 @@ def enrich_obras(db, limit=10, fetch=request_json):
 
 
 def collect_cgu(db, day, pages=10, fetch=request_json):
-    key = os.environ.get('TRANSPARENCIA_API_KEY')
+    key = os.environ.get('TRANSPARENCIA_API_KEY', '').strip()
     if not key:
         status(db, 'cgu', 'credentials_required', 'Aguardando TRANSPARENCIA_API_KEY no ambiente/GitHub Secrets. Nenhum pagamento foi inferido.')
         return
-    pending = cursor(db, 'cgu_day', day)
+    # API requires one extra filter. This initial scope is explicitly not national coverage.
+    management = os.environ.get('CGU_GESTAO', '00001').strip()
+    if not re.fullmatch(r'\d{5}', management):
+        raise ValueError('CGU_GESTAO deve conter cinco dígitos')
+    day_cursor = 'cgu_day:gestao:' + management
+    pending = cursor(db, day_cursor, day)
+    with db:
+        set_cursor(db, day_cursor, pending)
     if pending > day:
-        status(db, 'cgu', 'partial', 'Fila consultada até a data anterior; sem garantia de atualizações retroativas.', next_date=pending)
+        status(db, 'cgu', 'partial', 'Fila consultada até a data anterior; sem garantia de atualizações retroativas.', next_date=pending, management=management)
         return
     day = pending
     target = date.fromisoformat(day)
     expenses_complete = True
-    all_queries = [('despesas/documentos', {'dataEmissao': target.strftime('%d/%m/%Y'), 'fase': phase}) for phase in (1, 2, 3)]
+    all_queries = [('despesas/documentos', {'dataEmissao': target.strftime('%d/%m/%Y'), 'fase': phase, 'gestao': management}) for phase in (1, 2, 3)]
     all_queries.append(('emendas', {'ano': target.year}))
     try:
         for endpoint, params in all_queries:
             name = 'cgu_' + endpoint.replace('/', '_') + '_' + str(params.get('fase', 'emendas'))
             ck = name + ':' + (day if 'fase' in params else str(target.year))
+            if 'fase' in params:
+                ck += ':gestao:' + management
             page = int(cursor(db, ck))
             done = False
             for _ in range(pages):
@@ -204,13 +214,16 @@ def collect_cgu(db, day, pages=10, fetch=request_json):
                     set_cursor(db, ck, page)
                 time.sleep(.6)
             status(db, name, 'ok' if done else 'partial', 'Documentos oficiais preservados; sem vínculo automático a contratos PNCP.',
-                   date=day, phase=params.get('fase'), next_page=page)
+                   date=day, phase=params.get('fase'), next_page=page, management=params.get('gestao'))
             if 'fase' in params:
                 expenses_complete = expenses_complete and done
         if expenses_complete:
             with db:
-                set_cursor(db, 'cgu_day', str(target + timedelta(days=1)))
-        status(db, 'cgu', 'partial', 'Integração ativa; cobertura limitada às datas e páginas consultadas.')
+                set_cursor(db, day_cursor, str(target + timedelta(days=1)))
+        status(db, 'cgu', 'partial', 'Integração ativa; despesas limitadas à gestão informada, datas e páginas consultadas. Não abrange todos os gastos públicos.', management=management)
     except Exception as exc:
-        status(db, 'cgu', 'failed', 'Erro na consulta; chave não é registrada em logs.', error=type(exc).__name__)
+        code = exc.code if isinstance(exc, HTTPError) else None
+        metadata = dict(error=type(exc).__name__, http_status=code, endpoint=endpoint)
+        status(db, 'cgu', 'failed', 'Erro na consulta; chave e conteúdo da resposta não são registrados.', **metadata)
+        print(f'CGU: endpoint={endpoint}; HTTP={code if code is not None else "indisponível"}; erro={type(exc).__name__}.', flush=True)
         raise
