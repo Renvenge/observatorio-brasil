@@ -2,7 +2,7 @@
 
 Projeto para ajudar a detectar possíveis casos de corrupção por meio de padrões suspeitos em contratos públicos brasileiros, com fontes verificáveis e hipóteses explicáveis. O propósito é permitir que qualquer pessoa examine o uso do dinheiro público e aprofunde a investigação com base em evidências.
 
-**Versão inicial de pesquisa (0.1). Não comprova corrupção, não atribui culpa e não promete cobertura ou precisão de 100%.** Os critérios independem de partido, governo ou eleição. Órgão contratante não equivale a responsabilidade pessoal de um político.
+**Versão inicial de pesquisa (0.2). Não comprova corrupção, não atribui culpa e não promete cobertura ou precisão de 100%.** Os critérios independem de partido, governo ou eleição. Órgão contratante não equivale a responsabilidade pessoal de um político.
 
 ## Recursos
 
@@ -11,7 +11,7 @@ Projeto para ajudar a detectar possíveis casos de corrupção por meio de padr�
 - Relatórios CSV/JSON com fontes e cobertura.
 - Regra exploratória para valor global pelo menos 25% acima do inicial. Não é limite legal nem prova de superfaturamento.
 - IA sem supervisão (Isolation Forest) para combinações atípicas, com nomes descritivos automáticos, evidências e explicações alternativas. Não exige chave paga de IA.
-- Nove testes automatizados e monitor periódico no GitHub Actions.
+- Dezesseis testes automatizados e monitor periódico no GitHub Actions.
 
 ## Executar
 
