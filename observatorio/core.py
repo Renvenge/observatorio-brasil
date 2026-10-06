@@ -29,15 +29,29 @@ def connect(path):
         payload TEXT NOT NULL, UNIQUE(contract_id, digest));
       CREATE TABLE IF NOT EXISTS contracts (
         id TEXT PRIMARY KEY, snapshot_id INTEGER NOT NULL, last_seen TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS source_status (
+        source TEXT PRIMARY KEY, checked_at TEXT, status TEXT, message TEXT, metadata TEXT);
+      CREATE TABLE IF NOT EXISTS resources (
+        source TEXT, resource_id TEXT, digest TEXT, payload TEXT, url TEXT, collected_at TEXT,
+        PRIMARY KEY(source,resource_id,digest));
+      CREATE TABLE IF NOT EXISTS resource_latest (
+        source TEXT, resource_id TEXT, digest TEXT, PRIMARY KEY(source,resource_id));
+      CREATE TABLE IF NOT EXISTS refresh_queue (
+        contract_id TEXT PRIMARY KEY, attempted_at TEXT, succeeded_at TEXT, error TEXT);
+      CREATE TABLE IF NOT EXISTS cursors (name TEXT PRIMARY KEY, value TEXT);
+      CREATE TABLE IF NOT EXISTS reviews (
+        finding_id TEXT PRIMARY KEY, digest TEXT, label TEXT, note TEXT, reviewed_at TEXT);
+      CREATE INDEX IF NOT EXISTS snapshots_contract ON snapshots(contract_id,id);
+      CREATE INDEX IF NOT EXISTS resources_source ON resources(source,resource_id);
     ''')
     return db
 
 
-def request_json(url):
+def request_json(url, headers=None):
     for attempt in range(4):
         try:
             req = Request(url, headers={'Accept': 'application/json',
-                                        'User-Agent': 'ObservatorioBrasil/0.1'})
+                                        'User-Agent': 'ObservatorioBrasil/0.2', **(headers or {})})
             with urlopen(req, timeout=45) as response:
                 if response.status == 204:
                     return None
@@ -112,6 +126,7 @@ def collect(db, start, end, max_pages=None, fetch=request_json):
                     save(db, record, url)
                 count += len(records)
                 db.execute('UPDATE runs SET records=?,pages=? WHERE id=?', (count, page, run_id))
+            print(f'PNCP: página {page}/{pages}; {count} registros recebidos.', flush=True)
             if page >= pages:
                 total = payload.get('totalRegistros')
                 if not isinstance(total, int) or count != total:
