@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - uses: actions/checkout@v4
       - name: Testar autenticação e consulta sem revelar o segredo
         env:
           TRANSPARENCIA_API_KEY: ${{ secrets.TRANSPARENCIA_API_KEY }}
@@ -33,7 +34,7 @@ jobs:
           today = datetime.now(timezone(timedelta(hours=-3))).date()
           cases = [
               ('Autenticação em emendas', 'emendas', {'ano': today.year, 'pagina': 1}),
-              ('Consulta atual de despesas', 'despesas/documentos', {'dataEmissao': str((today-timedelta(days=1)).strftime('%d/%m/%Y')), 'fase': 1, 'pagina': 1})
+              *[(f'Despesas fase {phase}, gestão 00001', 'despesas/documentos', {'dataEmissao': (today-timedelta(days=1)).strftime('%d/%m/%Y'), 'fase': phase, 'gestao': '00001', 'pagina': 1}) for phase in (1, 2, 3)]
           ]
           report = ['# Diagnóstico CGU', '', 'A chave e o conteúdo das respostas não são registrados.', '']
           failed = False
@@ -67,4 +68,22 @@ jobs:
               time.sleep(2)
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as summary:
               summary.write('\n'.join(report) + '\n')
+          if not failed:
+              import tempfile, sys
+              sys.path.insert(0, os.getcwd())
+              from observatorio.core import connect
+              from observatorio.sources import collect_cgu
+              with tempfile.TemporaryDirectory() as folder:
+                  db = connect(folder + '/probe.sqlite3')
+                  try:
+                      collect_cgu(db, str(today-timedelta(days=1)), pages=1)
+                      count = db.execute('SELECT count(*) FROM resource_latest').fetchone()[0]
+                      print(f'Coletor real: {count} registros preservados no banco temporário de teste.')
+                      with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as summary:
+                          summary.write(f'\nColetor real validado: {count} registros no banco temporário de teste.\n')
+                  except Exception:
+                      print('Coletor real falhou; consulte o código HTTP seguro acima.')
+                      failed = True
+                  finally:
+                      db.close()
           raise SystemExit(1 if failed else 0)
