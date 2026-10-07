@@ -5,6 +5,8 @@ import json
 import re
 import time
 import unicodedata
+from http.client import HTTPException
+from urllib.error import HTTPError, URLError
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urljoin, urlsplit, unquote
@@ -34,13 +36,26 @@ def opener():
     return build_opener(HTTPCookieProcessor(http.cookiejar.CookieJar()), OfficialRedirect())
 
 
+def transient(exc):
+    if isinstance(exc, HTTPError):
+        return exc.code in (408, 429, 500, 502, 503, 504)
+    return isinstance(exc, (HTTPException, URLError, TimeoutError, ConnectionError, OSError))
+
+
 def read_url(url, *, headers=None, method='GET', limit=12_000_000):
     request = Request(official_url(url), headers={'User-Agent': 'ObservatorioBrasil/0.3', **(headers or {})}, method=method)
-    with opener().open(request, timeout=45) as response:
-        raw = response.read(limit + 1)
-        if len(raw) > limit:
-            raise ValueError('Resposta excede limite')
-        return raw
+    for attempt in range(5):
+        try:
+            with opener().open(request, timeout=45) as response:
+                raw = response.read(limit + 1)
+                if len(raw) > limit:
+                    raise ValueError('Resposta excede limite')
+                return raw
+        except Exception as exc:
+            if not transient(exc) or attempt == 4:
+                raise
+            print(f'Fonte {urlsplit(url).hostname}: {method}, {type(exc).__name__}; nova tentativa {attempt + 2}/5.', flush=True)
+            time.sleep(2 ** attempt)
 
 
 def download(url, *, headers=None, version='', limit=350_000_000, seconds=600):
@@ -56,20 +71,37 @@ def download(url, *, headers=None, version='', limit=350_000_000, seconds=600):
             valid = hashlib.file_digest(cached, 'sha256').hexdigest() == meta['sha256']
         if target.stat().st_size <= limit and valid:
             return target, meta['sha256']
-    request = Request(url, headers={'User-Agent': 'ObservatorioBrasil/0.3', **(headers or {})})
     temp = folder / (key + '.part')
     size, digest, start = 0, hashlib.sha256(), time.monotonic()
     try:
-        with opener().open(request, timeout=45) as response, temp.open('wb') as file:
-            while True:
-                block = response.read(1024 * 1024)
-                if not block:
-                    break
-                size += len(block)
-                if size > limit or time.monotonic() - start > seconds:
-                    raise ValueError('Download excede limite de tamanho ou tempo')
-                digest.update(block)
-                file.write(block)
+        # Retry a disconnected stream from the start: never combine different source versions.
+        for attempt in range(5):
+            request = Request(url, headers={'User-Agent': 'ObservatorioBrasil/0.3', **(headers or {})})
+            size, digest = 0, hashlib.sha256()
+            try:
+                with opener().open(request, timeout=45) as response, temp.open('wb') as file:
+                    expected = response.headers.get('Content-Length')
+                    if expected and int(expected) > limit:
+                        raise ValueError('Download excede limite de tamanho')
+                    while True:
+                        if time.monotonic() - start > seconds:
+                            raise ValueError('Download excede limite de tempo')
+                        block = response.read1(64 * 1024)
+                        if not block:
+                            break
+                        size += len(block)
+                        if size > limit:
+                            raise ValueError('Download excede limite de tamanho')
+                        digest.update(block)
+                        file.write(block)
+                    if expected and size != int(expected):
+                        raise ConnectionError('Transferência incompleta')
+                break
+            except Exception as exc:
+                if not transient(exc) or attempt == 4 or time.monotonic() - start > seconds:
+                    raise
+                print(f'Download {urlsplit(url).hostname}: {type(exc).__name__}; nova tentativa {attempt + 2}/5.', flush=True)
+                time.sleep(2 ** attempt)
         temp.replace(target)
         manifest.write_text(json.dumps(dict(url=url, sha256=digest.hexdigest(), bytes=size)), encoding='utf-8')
         return target, digest.hexdigest()
