@@ -1,8 +1,34 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-06T21:13:20.608126+00:00",
+  "generated_at": "2026-10-07T01:46:31.086898+00:00",
   "contracts": 48761,
   "works": 7929,
+  "political_links": {
+    "reference_month": null,
+    "parts": [],
+    "expected_parts": 10,
+    "elections": [
+      {
+        "year": 2022,
+        "candidatures": 1709,
+        "usable_masks": 1709
+      },
+      {
+        "year": 2024,
+        "candidatures": 69293,
+        "usable_masks": 0
+      },
+      {
+        "year": 2026,
+        "candidatures": 20989,
+        "usable_masks": 20986
+      }
+    ],
+    "method": "Nome completo normalizado e seis posições visíveis coincidentes. Nenhum dígito oculto é reconstruído.",
+    "limitation": "Correspondência a conferir, não identidade confirmada. Candidatura não comprova mandato atual. QSA atual não prova vínculo na data do contrato.",
+    "contract_correspondences": 0,
+    "linked_contracts": 0
+  },
   "findings": 2312,
   "runs": [
     {
@@ -164,6 +190,51 @@
         "ever_revisited": 80,
         "total": 48761,
         "errors": []
+      }
+    },
+    {
+      "name": "receita_qsa",
+      "checked_at": "2026-10-07T01:46:04.350378+00:00",
+      "status": "failed",
+      "message": "Atualização interrompida; última consulta preservada.",
+      "metadata": {
+        "error": "RemoteDisconnected"
+      }
+    },
+    {
+      "name": "tse_2022",
+      "checked_at": "2026-10-07T01:45:52.070074+00:00",
+      "status": "partial",
+      "message": "Candidaturas não comprovam mandato atual; CPF ausente não é reconstruído.",
+      "metadata": {
+        "rows_read": 29322,
+        "retained": 1709,
+        "usable_masks": 1709,
+        "source_url": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2022.zip"
+      }
+    },
+    {
+      "name": "tse_2024",
+      "checked_at": "2026-10-07T01:46:01.468583+00:00",
+      "status": "partial",
+      "message": "Candidaturas não comprovam mandato atual; CPF ausente não é reconstruído.",
+      "metadata": {
+        "rows_read": 463875,
+        "retained": 69293,
+        "usable_masks": 0,
+        "source_url": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2024.zip"
+      }
+    },
+    {
+      "name": "tse_2026",
+      "checked_at": "2026-10-07T01:46:02.500137+00:00",
+      "status": "partial",
+      "message": "Candidaturas não comprovam mandato atual; CPF ausente não é reconstruído.",
+      "metadata": {
+        "rows_read": 20989,
+        "retained": 20989,
+        "usable_masks": 20986,
+        "source_url": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2026.zip"
       }
     }
   ],
