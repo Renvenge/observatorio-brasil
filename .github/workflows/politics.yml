@@ -1,0 +1,32 @@
+name: Cruzar candidaturas e fornecedores
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '47 4 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: monitor-pncp
+  cancel-in-progress: false
+jobs:
+  link:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements.txt
+      - name: Restaurar histórico publicado
+        id: restore
+        run: python archive_state.py restore
+      - name: Cruzar TSE e dez partes do quadro societário
+        run: python political_monitor.py --parts 10
+      - name: Exportar correspondências e cobertura
+        id: export
+        if: ${{ !cancelled() && steps.restore.outcome == 'success' }}
+        run: python manage.py export
+      - name: Publicar dados preservando o histórico
+        if: ${{ !cancelled() && steps.export.outcome == 'success' }}
+        run: python archive_state.py save
