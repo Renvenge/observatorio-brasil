@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-07T14:26:00.126793+00:00",
+  "generated_at": "2026-10-07T23:16:39.989599+00:00",
   "contracts": 51646,
-  "works": 11816,
+  "works": 13800,
   "political_links": {
     "reference_month": "2026-09",
     "parts": [
@@ -82,6 +82,17 @@
   },
   "findings": 2423,
   "runs": [
+    {
+      "id": 9,
+      "started": "2026-10-07T23:12:18.375096+00:00",
+      "finished": "2026-10-07T23:12:49.353320+00:00",
+      "start": "2026-10-01",
+      "end": "2026-10-07",
+      "status": "failed",
+      "records": 4000,
+      "pages": 8,
+      "error": "HTTP Error 429: Too Many Requests"
+    },
     {
       "id": 8,
       "started": "2026-10-07T13:37:15.606144+00:00",
@@ -174,7 +185,7 @@
   "sources": [
     {
       "name": "cgu",
-      "checked_at": "2026-10-07T13:51:30.853700+00:00",
+      "checked_at": "2026-10-07T23:16:01.149943+00:00",
       "status": "partial",
       "message": "Fila consultada até a data anterior; sem garantia de atualizações retroativas.",
       "metadata": {
@@ -232,36 +243,36 @@
     },
     {
       "name": "obras",
-      "checked_at": "2026-10-07T13:51:17.082266+00:00",
+      "checked_at": "2026-10-07T23:15:49.640207+00:00",
       "status": "partial",
       "message": "Varredura incremental do cadastro; paginação não é fotografia transacional.",
       "metadata": {
-        "collected": 11816,
+        "collected": 13800,
         "total_reported": 154262,
-        "next_page": 61,
+        "next_page": 71,
         "scan_pass_finished": false
       }
     },
     {
       "name": "obras_execucao",
-      "checked_at": "2026-10-07T13:51:30.818540+00:00",
+      "checked_at": "2026-10-07T23:16:01.097899+00:00",
       "status": "partial",
       "message": "Fila de enriquecimento por identificador oficial. Empenho, liquidado e pago são campos distintos.",
       "metadata": {
         "attempted": 10,
         "errors": 0,
-        "with_financial_data": 29
+        "with_financial_data": 32
       }
     },
     {
       "name": "pncp_revisitas",
-      "checked_at": "2026-10-07T13:50:33.274398+00:00",
+      "checked_at": "2026-10-07T23:15:10.475785+00:00",
       "status": "partial",
       "message": "Fila rotativa de contratos já conhecidos; falhas não apagam registros anteriores.",
       "metadata": {
         "attempted": 20,
         "success": 20,
-        "ever_revisited": 120,
+        "ever_revisited": 140,
         "total": 51646,
         "errors": []
       }
