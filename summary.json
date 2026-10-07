@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-07T06:26:10.706332+00:00",
+  "generated_at": "2026-10-07T11:24:10.203490+00:00",
   "contracts": 49190,
   "works": 9927,
   "political_links": {
@@ -205,7 +205,7 @@
     },
     {
       "name": "receita_qsa",
-      "checked_at": "2026-10-07T01:46:04.350378+00:00",
+      "checked_at": "2026-10-07T11:23:42.316873+00:00",
       "status": "failed",
       "message": "Atualização interrompida; última consulta preservada.",
       "metadata": {
