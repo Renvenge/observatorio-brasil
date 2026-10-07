@@ -1,4 +1,5 @@
 import json
+import re
 from collections import defaultdict
 from pathlib import Path
 
@@ -6,6 +7,7 @@ from .core import amount, current, now, rules
 from .discovery import discover
 from .intelligence import calibration, duplication, finding_id
 from .sources import resources, contract_url
+from .politics import political_links, link_coverage
 
 
 def export_public(db, out='reports'):
@@ -22,9 +24,23 @@ def export_public(db, out='reports'):
         histories[cid].append(dict(at=stamp, value=amount(row.get('valorGlobal')), end=row.get('dataVigenciaFim'), sha256=digest))
     links = {name: {r['id']: r for r in resources(db, 'pncp_' + name)} for name in ('termos', 'arquivos', 'historico')}
     contracts = []
+    company_links = political_links(db)
+    associations = []
     for record in records:
         d = record['data']
         cid = record['id']
+        supplier_id = re.sub(r'[^A-Z0-9]', '', str(d.get('niFornecedor') or '').upper()) if d.get('tipoPessoa') == 'PJ' else ''
+        matched = company_links.get(supplier_id[:8], []) if re.fullmatch(r'[A-Z0-9]{12}[0-9]{2}', supplier_id) else []
+        for match in matched:
+            entry = match.get('entry_date', '')
+            start = str(d.get('dataVigenciaInicio') or '')[:10].replace('-', '')
+            timing = 'sem_confirmacao_historica'
+            if re.fullmatch(r'\d{8}', entry) and len(start) == 8 and entry > start:
+                timing = 'entrada_posterior_ao_inicio_do_contrato'
+            associations.append(dict(**match, contract_id=cid, supplier=d.get('nomeRazaoSocialFornecedor'),
+                supplier_cnpj=supplier_id, organization=(d.get('orgaoEntidade') or {}).get('razaoSocial'),
+                uf=(d.get('unidadeOrgao') or {}).get('ufSigla'), city=(d.get('unidadeOrgao') or {}).get('municipioNome'),
+                contract_value=amount(d.get('valorGlobal')), contract_start=d.get('dataVigenciaInicio'), timing=timing))
         try:
             source = contract_url(cid)
         except ValueError:
@@ -36,7 +52,7 @@ def export_public(db, out='reports'):
             value=amount(d.get('valorGlobal')), initial=amount(d.get('valorInicial')), revenue=d.get('receita'),
             published=d.get('dataPublicacaoPncp'), start=d.get('dataVigenciaInicio'), end=d.get('dataVigenciaFim'),
             checked_at=record['checked_at'], source=source, sha256=record['sha256'],
-            work_id=d.get('identificadorCipi'), revisions=histories[cid], findings=by_id[cid],
+            work_id=d.get('identificadorCipi'), revisions=histories[cid], findings=by_id[cid], political_matches=len(matched),
             documents=[dict(type=name, source=links[name][cid]['source'], checked_at=links[name][cid]['checked_at'])
                        for name in links if cid in links[name]]))
     sources = [dict(name=r[0], checked_at=r[1], status=r[2], message=r[3], metadata=json.loads(r[4]))
@@ -62,6 +78,8 @@ def export_public(db, out='reports'):
     destination = Path(out)
     destination.mkdir(parents=True, exist_ok=True)
     metadata = dict(schema_version=2, generated_at=now(), contracts=len(contracts), works=len(works),
+        political_links=dict(**link_coverage(db), contract_correspondences=len(associations),
+                             linked_contracts=len({r['contract_id'] for r in associations})),
         findings=len(findings), runs=runs, sources=sources, calibration=calibration(db, findings),
         ai={k: v for k, v in ai.items() if k != 'hypotheses'},
         limitations=['Cobertura depende dos períodos consultados e das fontes disponíveis.',
@@ -69,7 +87,7 @@ def export_public(db, out='reports'):
                      'Valor contratado, investimento previsto e pagamento não são somáveis.',
                      'Mudança de gestão não estabelece responsabilidade pessoal.'],
         repository='https://github.com/Renvenge/observatorio-brasil')
-    (destination / 'current.json').write_text(json.dumps(dict(meta=metadata, contracts=contracts, works=works),
+    (destination / 'current.json').write_text(json.dumps(dict(meta=metadata, contracts=contracts, works=works, associations=associations),
                                                        ensure_ascii=False, allow_nan=False, separators=(',', ':')), encoding='utf-8')
     (destination / 'summary.json').write_text(json.dumps(metadata, ensure_ascii=False, indent=2), encoding='utf-8')
     return metadata
