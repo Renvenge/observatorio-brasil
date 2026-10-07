@@ -11,7 +11,7 @@ Projeto para ajudar a detectar possíveis casos de corrupção por meio de padr�
 - Relatórios CSV/JSON com fontes e cobertura.
 - Regra exploratória para valor global pelo menos 25% acima do inicial. Não é limite legal nem prova de superfaturamento.
 - IA sem supervisão (Isolation Forest) para combinações atípicas, com nomes descritivos automáticos, evidências e explicações alternativas. Não exige chave paga de IA.
-- Dezesseis testes automatizados e monitor periódico no GitHub Actions.
+- Testes automatizados e monitor periódico no GitHub Actions.
 
 ## Executar
 
@@ -80,10 +80,25 @@ Rótulos: `supported`, `false_positive`, `inconclusive`. A revisão fica vincula
 
 Não prometemos detectar toda corrupção. A IA propõe nomes descritivos para combinações atípicas, sem afirmar que descobriu um novo crime. Contratos com campos coincidentes geram hipótese de duplicidade, não prova de pagamento duplicado.
 
-Ainda dependem de fontes e validação: cobertura histórica completa, todas as bases estaduais e municipais, leitura e validação de PDFs/medições, comparação automática SINAPI/SICRO, vínculos societários e atribuição fundamentada a mandatos. Não inferimos responsabilidade pessoal pela data do contrato, nem vinculamos pagamentos a contratos apenas pelo nome do fornecedor. A API CGU pode publicar documentos com atraso; a fila implementada não garante capturar toda alteração retroativa.
+Ainda dependem de fontes e validação: cobertura histórica completa, todas as bases estaduais e municipais, leitura e validação de PDFs/medições, comparação automática SINAPI/SICRO, verificação histórica de vínculos societários e atribuição fundamentada a mandatos. Não inferimos responsabilidade pessoal pela data do contrato, nem vinculamos pagamentos a contratos apenas pelo nome do fornecedor. A API CGU pode publicar documentos com atraso; a fila implementada não garante capturar toda alteração retroativa.
 
-Dados públicos podem conter informações pessoais. O painel não exporta CPF nem nome de fornecedor pessoa física. O checkpoint preserva registros originais das APIs; sua publicação deve permanecer restrita a fontes públicas autorizadas. Não adicionar dados privados.
+Dados públicos podem conter informações pessoais. O painel não exporta CPF completo nem nome de fornecedor pessoa física; a seção de correspondências utiliza apenas CPF mascarado. O checkpoint preserva registros originais das APIs; sua publicação deve permanecer restrita a fontes públicas autorizadas. Não adicionar dados privados.
 
 ## Contribuir
 
 Cada indicador precisa de fonte, explicação, exemplos legítimos que possam dispará-lo, testes de dados ausentes e critérios de revisão. Não incluir credenciais ou acusações nos commits. Hipóteses devem ser chamadas de hipóteses; discussões partidárias não substituem evidências.
+
+
+## Candidaturas, sociedades e fornecedores
+
+O monitor `political_monitor.py` cruza fornecedores PJ do PNCP com o quadro público de sócios e administradores da Receita e candidaturas do TSE. A rotina independente `Cruzar candidaturas e fornecedores` atualiza diariamente os anos 2022, 2024 e 2026 e as dez partes do mês mais recente da Receita. Compartilha a fila de publicação com o monitor principal para não sobrescrever coletas concorrentes.
+
+Para anos anteriores ao ano corrente, são retidas candidaturas cujo resultado na fonte começa por ELEITO; para 2026, no ano de 2026, entram todas as candidaturas. Isso não verifica mandato atual. Os dados de 2024 consultados não contêm CPF utilizável e não geram correspondências automáticas.
+
+Uma correspondência exige nome completo normalizado igual e as mesmas seis posições centrais visíveis do CPF. Os outros dígitos não são armazenados nos registros eleitorais nem reconstruídos. Homônimos e colisões continuam possíveis: o resultado é sempre **correspondência a conferir**, nunca identidade confirmada ou um sinal financeiro. A relação societária não estabelece favorecimento ou corrupção.
+
+O CNPJ do fornecedor é associado pela raiz de oito caracteres, comum à matriz e filiais. O painel informa eleição, partido naquela eleição, situação eleitoral, mês da Receita, data de entrada societária, datas de consulta e fontes. Uma entrada posterior ao início do contrato recebe ressalva expressa. O QSA atual não comprova participação na época do contrato.
+
+A cobertura mostra candidaturas com identificador utilizável, mês e partes societárias consultadas. Falhas preservam a última consulta válida; não significam ausência de relações. A rotina reconsulta as partes para incluir novos fornecedores. O download bruto fica apenas no diretório local ignorado e é removido após processamento; o checkpoint guarda somente as correspondências de fornecedores da base e os registros eleitorais minimizados.
+
+Execução: `python political_monitor.py --parts 10`, seguida por `python manage.py export`. Não exige a chave da CGU.
