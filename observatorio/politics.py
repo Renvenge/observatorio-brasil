@@ -165,16 +165,19 @@ def import_qsa(db, month, part, path, source, digest):
 
 def collect_qsa(db):
     schema(db)
+    print('Receita: consultando catálogo de meses via WebDAV público.', flush=True)
     months = sorted(n for n, _ in dav_list() if re.fullmatch(r'20\d{2}-\d{2}', n))
     if not months:
         raise ValueError('Catálogo Receita sem mês disponível')
     month = months[-1]
+    print(f'Receita: consultando arquivos do mês {month}.', flush=True)
     parts = sorted((n, etag) for n, etag in dav_list(month + '/') if re.fullmatch(r'Socios\d+\.zip', n))
     if len(parts) != 10:
         raise ValueError('Catálogo QSA não contém as dez partes esperadas')
     attempts = {r[0]: r[1] for r in db.execute('SELECT part,checked_at FROM qsa_parts WHERE month=?', (month,))}
     part, etag = min(parts, key=lambda p: (attempts.get(p[0], ''), p[0]))
     auth = 'Basic ' + base64.b64encode((SHARE + ':').encode()).decode()
+    print(f'Receita: transferindo {month}/{part}.', flush=True)
     path, digest = download(DAV + month + '/' + part, headers={'Authorization': auth}, version=etag)
     try:
         result = import_qsa(db, month, part, path, QSA_SOURCE, digest)
@@ -218,6 +221,7 @@ def collect_links(db, parts=1):
             print('QSA Receita: ' + json.dumps(collect_qsa(db)), flush=True)
         except Exception as exc:
             failures.append('receita_qsa')
+            print(f'Receita: {type(exc).__name__}; HTTP {getattr(exc, "code", "não disponível")}.', flush=True)
             status(db, 'receita_qsa', 'failed', 'Atualização interrompida; última consulta preservada.', error=type(exc).__name__)
             break
     if failures:
