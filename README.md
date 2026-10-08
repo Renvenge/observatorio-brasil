@@ -102,3 +102,9 @@ O CNPJ do fornecedor é associado pela raiz de oito caracteres, comum à matriz 
 A cobertura mostra candidaturas com identificador utilizável, mês e partes societárias consultadas. Falhas preservam a última consulta válida; não significam ausência de relações. A rotina reconsulta as partes para incluir novos fornecedores. O download bruto fica apenas no diretório local ignorado e é removido após processamento; o checkpoint guarda somente as correspondências de fornecedores da base e os registros eleitorais minimizados.
 
 Execução: `python political_monitor.py --parts 10`, seguida por `python manage.py export`. Não exige a chave da CGU.
+
+## Coleta histórica e leitura local de PDFs
+
+`python manage.py history --pages 5 --earliest 2021-01-01` consulta o PNCP por dia de publicação, começando sete dias antes da primeira execução e retrocedendo. O cursor permanece no banco e no checkpoint. Falhas de rede mantêm a página pendente; paginação inconsistente reinicia somente a janela afetada. Registros antigos não substituem detalhes já conhecidos. O monitor foi preparado para consultar cinco páginas adicionais por ciclo. A ampliação é gradual e não equivale à cobertura nacional completa; o checkpoint continua limitado a 80 MB comprimidos.
+
+`python manage.py document URL_OFICIAL_PNCP --output data/documents/resultado.json` baixa e extrai texto de um PDF oficial do PNCP. O relatório local registra fonte, SHA-256, páginas, texto extraído e páginas pendentes. Limites: arquivo de 20 MB, 150 páginas, 500 mil caracteres e 60 segundos para processamento. Páginas sem texto exigem conferência ou OCR. O texto não é automaticamente publicado, interpretado como pagamento ou usado para afirmar irregularidades. A extração não executa OCR nem interpreta tabelas de preços. A integração em lote e o armazenamento durável dos documentos ainda estão pendentes.

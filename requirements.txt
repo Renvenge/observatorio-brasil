@@ -1,1 +1,2 @@
 scikit-learn==1.7.2
+pypdf==6.19.0

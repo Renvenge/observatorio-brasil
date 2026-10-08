@@ -70,6 +70,12 @@ def main():
     enrich.add_argument('--work-pages', type=int, default=10)
     enrich.add_argument('--work-details', type=int, default=10)
     commands.add_parser('export')
+    document = commands.add_parser('document')
+    document.add_argument('url', help='URL oficial HTTPS de um PDF no PNCP')
+    document.add_argument('--output', default='data/documents/latest.json')
+    history = commands.add_parser('history')
+    history.add_argument('--pages', type=int, default=5)
+    history.add_argument('--earliest', default='2021-01-01')
     for name in ('backup', 'restore'):
         commands.add_parser(name).add_argument('file')
     review = commands.add_parser('review')
@@ -80,6 +86,10 @@ def main():
     compare = commands.add_parser('compare-prices')
     compare.add_argument('file', help='JSON com item e reference; campos equivalentes obrigatórios')
     args = parser.parse_args()
+    if args.command == 'document':
+        from observatorio.documents import analyze_url
+        print(json.dumps(analyze_url(args.url, args.output), ensure_ascii=False, indent=2))
+        return
     if args.command == 'backup':
         backup(args.db, args.file)
         return
@@ -94,6 +104,9 @@ def main():
     with connect(args.db) as db:
         if args.command == 'export':
             print(json.dumps(export_public(db), ensure_ascii=False, indent=2))
+        elif args.command == 'history':
+            from observatorio.history import backfill
+            backfill(db, args.pages, args.earliest, today=datetime.now(timezone(timedelta(hours=-3))).date())
         elif args.command == 'review':
             records = current(db)
             findings = rules(records) + duplication(records) + discover(records)['hypotheses']
