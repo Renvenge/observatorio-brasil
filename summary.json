@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-08T11:55:42.531700+00:00",
-  "contracts": 57394,
-  "works": 15798,
+  "generated_at": "2026-10-08T13:58:45.331708+00:00",
+  "contracts": 60058,
+  "works": 17498,
   "political_links": {
     "reference_month": "2026-09",
     "parts": [
@@ -80,8 +80,19 @@
     "contract_correspondences": 29,
     "linked_contracts": 29
   },
-  "findings": 2709,
+  "findings": 2920,
   "runs": [
+    {
+      "id": 11,
+      "started": "2026-10-08T13:44:37.960718+00:00",
+      "finished": "2026-10-08T13:55:47.706226+00:00",
+      "start": "2026-10-02",
+      "end": "2026-10-08",
+      "status": "complete",
+      "records": 35431,
+      "pages": 71,
+      "error": null
+    },
     {
       "id": 10,
       "started": "2026-10-08T06:20:04.213275+00:00",
@@ -196,10 +207,11 @@
   "sources": [
     {
       "name": "cgu",
-      "checked_at": "2026-10-08T06:31:02.236350+00:00",
+      "checked_at": "2026-10-08T13:58:02.146352+00:00",
       "status": "partial",
-      "message": "Integração ativa; despesas limitadas à gestão informada, datas e páginas consultadas. Não abrange todos os gastos públicos.",
+      "message": "Fila consultada até a data anterior; sem garantia de atualizações retroativas.",
       "metadata": {
+        "next_date": "2026-10-08",
         "management": "00001"
       }
     },
@@ -253,37 +265,37 @@
     },
     {
       "name": "obras",
-      "checked_at": "2026-10-08T06:30:36.653094+00:00",
+      "checked_at": "2026-10-08T13:57:49.811670+00:00",
       "status": "partial",
       "message": "Varredura incremental do cadastro; paginação não é fotografia transacional.",
       "metadata": {
-        "collected": 15798,
-        "total_reported": 154262,
-        "next_page": 81,
+        "collected": 17498,
+        "total_reported": 154303,
+        "next_page": 91,
         "scan_pass_finished": false
       }
     },
     {
       "name": "obras_execucao",
-      "checked_at": "2026-10-08T06:30:51.397745+00:00",
+      "checked_at": "2026-10-08T13:58:02.081704+00:00",
       "status": "partial",
       "message": "Fila de enriquecimento por identificador oficial. Empenho, liquidado e pago são campos distintos.",
       "metadata": {
         "attempted": 10,
         "errors": 0,
-        "with_financial_data": 35
+        "with_financial_data": 38
       }
     },
     {
       "name": "pncp_revisitas",
-      "checked_at": "2026-10-08T06:29:51.062942+00:00",
+      "checked_at": "2026-10-08T13:57:09.908533+00:00",
       "status": "partial",
       "message": "Fila rotativa de contratos já conhecidos; falhas não apagam registros anteriores.",
       "metadata": {
         "attempted": 20,
         "success": 20,
-        "ever_revisited": 160,
-        "total": 57394,
+        "ever_revisited": 180,
+        "total": 60058,
         "errors": []
       }
     },
@@ -346,16 +358,16 @@
       "inconclusive": 0,
       "stale": 0
     },
-    "total_findings": 2709,
+    "total_findings": 2920,
     "precision_among_reviewed": null,
     "limitation": "Proporção de hipóteses sustentadas entre revisadas, não precisão de detecção de corrupção. Amostra pode ter viés. Sensibilidade/recall não medido."
   },
   "ai": {
     "method": "Detecção exploratória sem supervisão; nomes descritivos automáticos.",
     "limitations": "Não detecta toda fraude, não prova crime ou novidade de um esquema. Grupos não garantem objetos equivalentes; não é comparação de preços unitários.",
-    "assessed": 51274,
-    "excluded_missing_data": 2016,
-    "excluded_small_or_constant_groups": 4104
+    "assessed": 53830,
+    "excluded_missing_data": 2071,
+    "excluded_small_or_constant_groups": 4157
   },
   "limitations": [
     "Cobertura depende dos períodos consultados e das fontes disponíveis.",
