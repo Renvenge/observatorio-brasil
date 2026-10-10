@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-09T22:56:24.658127+00:00",
-  "contracts": 74055,
-  "works": 23469,
+  "generated_at": "2026-10-10T06:22:11.401717+00:00",
+  "contracts": 74287,
+  "works": 24741,
   "political_links": {
     "reference_month": "2026-09",
     "parts": [
@@ -80,8 +80,19 @@
     "contract_correspondences": 31,
     "linked_contracts": 31
   },
-  "findings": 3617,
+  "findings": 3611,
   "runs": [
+    {
+      "id": 16,
+      "started": "2026-10-10T06:03:38.713932+00:00",
+      "finished": "2026-10-10T06:18:46.856932+00:00",
+      "start": "2026-10-04",
+      "end": "2026-10-10",
+      "status": "complete",
+      "records": 41306,
+      "pages": 83,
+      "error": null
+    },
     {
       "id": 15,
       "started": "2026-10-09T22:45:41.593548+00:00",
@@ -251,21 +262,20 @@
   "sources": [
     {
       "name": "cgu",
-      "checked_at": "2026-10-09T22:55:35.123496+00:00",
+      "checked_at": "2026-10-10T06:21:27.004257+00:00",
       "status": "partial",
-      "message": "Fila consultada até a data anterior; sem garantia de atualizações retroativas.",
+      "message": "Integração ativa; despesas limitadas à gestão informada, datas e páginas consultadas. Não abrange todos os gastos públicos.",
       "metadata": {
-        "next_date": "2026-10-09",
         "management": "00001"
       }
     },
     {
       "name": "cgu_despesas_documentos_1",
-      "checked_at": "2026-10-09T06:31:41.726326+00:00",
+      "checked_at": "2026-10-10T06:21:16.116004+00:00",
       "status": "ok",
       "message": "Documentos oficiais preservados; sem vínculo automático a contratos PNCP.",
       "metadata": {
-        "date": "2026-10-08",
+        "date": "2026-10-09",
         "phase": 1,
         "next_page": 1,
         "management": "00001"
@@ -273,11 +283,11 @@
     },
     {
       "name": "cgu_despesas_documentos_2",
-      "checked_at": "2026-10-09T06:31:42.001273+00:00",
+      "checked_at": "2026-10-10T06:21:16.742040+00:00",
       "status": "ok",
       "message": "Documentos oficiais preservados; sem vínculo automático a contratos PNCP.",
       "metadata": {
-        "date": "2026-10-08",
+        "date": "2026-10-09",
         "phase": 2,
         "next_page": 1,
         "management": "00001"
@@ -285,11 +295,11 @@
     },
     {
       "name": "cgu_despesas_documentos_3",
-      "checked_at": "2026-10-09T06:31:42.171132+00:00",
+      "checked_at": "2026-10-10T06:21:17.366294+00:00",
       "status": "ok",
       "message": "Documentos oficiais preservados; sem vínculo automático a contratos PNCP.",
       "metadata": {
-        "date": "2026-10-08",
+        "date": "2026-10-09",
         "phase": 3,
         "next_page": 1,
         "management": "00001"
@@ -297,49 +307,49 @@
     },
     {
       "name": "cgu_emendas_emendas",
-      "checked_at": "2026-10-09T06:31:50.639289+00:00",
+      "checked_at": "2026-10-10T06:21:27.003752+00:00",
       "status": "partial",
       "message": "Documentos oficiais preservados; sem vínculo automático a contratos PNCP.",
       "metadata": {
-        "date": "2026-10-08",
+        "date": "2026-10-09",
         "phase": null,
-        "next_page": 41,
+        "next_page": 51,
         "management": null
       }
     },
     {
       "name": "obras",
-      "checked_at": "2026-10-09T22:55:18.690726+00:00",
+      "checked_at": "2026-10-10T06:21:00.649207+00:00",
       "status": "partial",
       "message": "Varredura incremental do cadastro; paginação não é fotografia transacional.",
       "metadata": {
-        "collected": 23469,
+        "collected": 24741,
         "total_reported": 154340,
-        "next_page": 131,
+        "next_page": 141,
         "scan_pass_finished": false
       }
     },
     {
       "name": "obras_execucao",
-      "checked_at": "2026-10-09T22:55:35.039423+00:00",
+      "checked_at": "2026-10-10T06:21:15.225475+00:00",
       "status": "partial",
       "message": "Fila de enriquecimento por identificador oficial. Empenho, liquidado e pago são campos distintos.",
       "metadata": {
         "attempted": 10,
         "errors": 0,
-        "with_financial_data": 43
+        "with_financial_data": 44
       }
     },
     {
       "name": "pncp_revisitas",
-      "checked_at": "2026-10-09T22:54:35.363549+00:00",
+      "checked_at": "2026-10-10T06:20:17.127475+00:00",
       "status": "partial",
       "message": "Fila rotativa de contratos já conhecidos; falhas não apagam registros anteriores.",
       "metadata": {
         "attempted": 20,
         "success": 20,
-        "ever_revisited": 260,
-        "total": 74055,
+        "ever_revisited": 280,
+        "total": 74287,
         "errors": []
       }
     },
@@ -402,16 +412,16 @@
       "inconclusive": 0,
       "stale": 0
     },
-    "total_findings": 3617,
+    "total_findings": 3611,
     "precision_among_reviewed": null,
     "limitation": "Proporção de hipóteses sustentadas entre revisadas, não precisão de detecção de corrupção. Amostra pode ter viés. Sensibilidade/recall não medido."
   },
   "ai": {
     "method": "Detecção exploratória sem supervisão; nomes descritivos automáticos.",
     "limitations": "Não detecta toda fraude, não prova crime ou novidade de um esquema. Grupos não garantem objetos equivalentes; não é comparação de preços unitários.",
-    "assessed": 67195,
-    "excluded_missing_data": 2609,
-    "excluded_small_or_constant_groups": 4251
+    "assessed": 67307,
+    "excluded_missing_data": 2721,
+    "excluded_small_or_constant_groups": 4259
   },
   "limitations": [
     "Cobertura depende dos períodos consultados e das fontes disponíveis.",
