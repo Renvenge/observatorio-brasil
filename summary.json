@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-11T11:18:17.548820+00:00",
+  "generated_at": "2026-10-11T14:20:22.278754+00:00",
   "contracts": 74382,
-  "works": 29564,
+  "works": 29847,
   "political_links": {
     "reference_month": "2026-09",
     "parts": [
@@ -82,6 +82,17 @@
   },
   "findings": 3609,
   "runs": [
+    {
+      "id": 20,
+      "started": "2026-10-11T13:07:14.612496+00:00",
+      "finished": "2026-10-11T13:15:29.835242+00:00",
+      "start": "2026-10-05",
+      "end": "2026-10-11",
+      "status": "complete",
+      "records": 41266,
+      "pages": 83,
+      "error": null
+    },
     {
       "id": 19,
       "started": "2026-10-11T06:01:23.708136+00:00",
@@ -295,10 +306,11 @@
   "sources": [
     {
       "name": "cgu",
-      "checked_at": "2026-10-11T06:18:43.231586+00:00",
+      "checked_at": "2026-10-11T14:19:57.667749+00:00",
       "status": "partial",
-      "message": "Integração ativa; despesas limitadas à gestão informada, datas e páginas consultadas. Não abrange todos os gastos públicos.",
+      "message": "Fila consultada até a data anterior; sem garantia de atualizações retroativas.",
       "metadata": {
+        "next_date": "2026-10-11",
         "management": "00001"
       }
     },
@@ -352,38 +364,139 @@
     },
     {
       "name": "obras",
-      "checked_at": "2026-10-11T06:18:19.416102+00:00",
+      "checked_at": "2026-10-11T14:19:43.203571+00:00",
       "status": "partial",
       "message": "Varredura incremental do cadastro; paginação não é fotografia transacional.",
       "metadata": {
-        "collected": 29564,
-        "total_reported": 154390,
-        "next_page": 171,
+        "collected": 29847,
+        "total_reported": 154391,
+        "next_page": 181,
         "scan_pass_finished": false
       }
     },
     {
       "name": "obras_execucao",
-      "checked_at": "2026-10-11T06:18:32.674079+00:00",
+      "checked_at": "2026-10-11T14:19:57.570134+00:00",
       "status": "partial",
       "message": "Fila de enriquecimento por identificador oficial. Empenho, liquidado e pago são campos distintos.",
       "metadata": {
         "attempted": 10,
         "errors": 0,
-        "with_financial_data": 51
+        "with_financial_data": 57
       }
     },
     {
       "name": "pncp_revisitas",
-      "checked_at": "2026-10-11T06:17:35.402179+00:00",
+      "checked_at": "2026-10-11T14:19:02.595968+00:00",
       "status": "partial",
       "message": "Fila rotativa de contratos já conhecidos; falhas não apagam registros anteriores.",
       "metadata": {
         "attempted": 20,
-        "success": 20,
+        "success": 0,
         "ever_revisited": 340,
         "total": 74382,
-        "errors": []
+        "errors": [
+          {
+            "id": "00299180000154-2-000006/2026",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000007/2026",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000008/2026",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000009/2026",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000010/2026",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000011/2026",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000012/2026",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000013/2026",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000014/2026",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000015/2026",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000016/2025",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000016/2026",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000017/2025",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000017/2026",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000018/2025",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000019/2025",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000020/2025",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000021/2025",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000022/2025",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          },
+          {
+            "id": "00299180000154-2-000023/2025",
+            "resource": "contrato",
+            "error": "TimeoutError"
+          }
+        ]
       }
     },
     {
