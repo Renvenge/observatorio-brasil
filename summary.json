@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-12T12:34:03.949279+00:00",
+  "generated_at": "2026-10-12T16:59:00.434066+00:00",
   "contracts": 74382,
-  "works": 29847,
+  "works": 30763,
   "political_links": {
     "reference_month": "2026-09",
     "parts": [
@@ -82,6 +82,17 @@
   },
   "findings": 3609,
   "runs": [
+    {
+      "id": 21,
+      "started": "2026-10-12T15:46:41.429987+00:00",
+      "finished": "2026-10-12T15:52:54.867469+00:00",
+      "start": "2026-10-06",
+      "end": "2026-10-12",
+      "status": "complete",
+      "records": 33726,
+      "pages": 68,
+      "error": null
+    },
     {
       "id": 20,
       "started": "2026-10-11T13:07:14.612496+00:00",
@@ -306,21 +317,20 @@
   "sources": [
     {
       "name": "cgu",
-      "checked_at": "2026-10-11T14:19:57.667749+00:00",
+      "checked_at": "2026-10-12T16:58:10.221345+00:00",
       "status": "partial",
-      "message": "Fila consultada até a data anterior; sem garantia de atualizações retroativas.",
+      "message": "Integração ativa; despesas limitadas à gestão informada, datas e páginas consultadas. Não abrange todos os gastos públicos.",
       "metadata": {
-        "next_date": "2026-10-11",
         "management": "00001"
       }
     },
     {
       "name": "cgu_despesas_documentos_1",
-      "checked_at": "2026-10-11T06:18:33.345816+00:00",
+      "checked_at": "2026-10-12T16:57:59.991533+00:00",
       "status": "ok",
       "message": "Documentos oficiais preservados; sem vínculo automático a contratos PNCP.",
       "metadata": {
-        "date": "2026-10-10",
+        "date": "2026-10-11",
         "phase": 1,
         "next_page": 1,
         "management": "00001"
@@ -328,11 +338,11 @@
     },
     {
       "name": "cgu_despesas_documentos_2",
-      "checked_at": "2026-10-11T06:18:33.749806+00:00",
+      "checked_at": "2026-10-12T16:58:00.563634+00:00",
       "status": "ok",
       "message": "Documentos oficiais preservados; sem vínculo automático a contratos PNCP.",
       "metadata": {
-        "date": "2026-10-10",
+        "date": "2026-10-11",
         "phase": 2,
         "next_page": 1,
         "management": "00001"
@@ -340,11 +350,11 @@
     },
     {
       "name": "cgu_despesas_documentos_3",
-      "checked_at": "2026-10-11T06:18:33.932517+00:00",
+      "checked_at": "2026-10-12T16:58:00.793177+00:00",
       "status": "ok",
       "message": "Documentos oficiais preservados; sem vínculo automático a contratos PNCP.",
       "metadata": {
-        "date": "2026-10-10",
+        "date": "2026-10-11",
         "phase": 3,
         "next_page": 1,
         "management": "00001"
@@ -352,31 +362,31 @@
     },
     {
       "name": "cgu_emendas_emendas",
-      "checked_at": "2026-10-11T06:18:43.231043+00:00",
+      "checked_at": "2026-10-12T16:58:10.220731+00:00",
       "status": "partial",
       "message": "Documentos oficiais preservados; sem vínculo automático a contratos PNCP.",
       "metadata": {
-        "date": "2026-10-10",
+        "date": "2026-10-11",
         "phase": null,
-        "next_page": 61,
+        "next_page": 71,
         "management": null
       }
     },
     {
       "name": "obras",
-      "checked_at": "2026-10-11T14:19:43.203571+00:00",
+      "checked_at": "2026-10-12T16:57:40.993777+00:00",
       "status": "partial",
       "message": "Varredura incremental do cadastro; paginação não é fotografia transacional.",
       "metadata": {
-        "collected": 29847,
+        "collected": 30763,
         "total_reported": 154391,
-        "next_page": 181,
+        "next_page": 191,
         "scan_pass_finished": false
       }
     },
     {
       "name": "obras_execucao",
-      "checked_at": "2026-10-11T14:19:57.570134+00:00",
+      "checked_at": "2026-10-12T16:57:59.101269+00:00",
       "status": "partial",
       "message": "Fila de enriquecimento por identificador oficial. Empenho, liquidado e pago são campos distintos.",
       "metadata": {
@@ -387,7 +397,7 @@
     },
     {
       "name": "pncp_revisitas",
-      "checked_at": "2026-10-11T14:19:02.595968+00:00",
+      "checked_at": "2026-10-12T16:56:56.662492+00:00",
       "status": "partial",
       "message": "Fila rotativa de contratos já conhecidos; falhas não apagam registros anteriores.",
       "metadata": {
@@ -397,102 +407,102 @@
         "total": 74382,
         "errors": [
           {
-            "id": "00299180000154-2-000006/2026",
+            "id": "00299180000154-2-000024/2025",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000007/2026",
+            "id": "00299180000154-2-000025/2025",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000008/2026",
+            "id": "00299180000154-2-000026/2025",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000009/2026",
+            "id": "00299180000154-2-000027/2025",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000010/2026",
+            "id": "00299180000154-2-000028/2025",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000011/2026",
+            "id": "00299180000154-2-000029/2025",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000012/2026",
+            "id": "00299180000154-2-000030/2025",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000013/2026",
+            "id": "00299180000154-2-000031/2025",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000014/2026",
+            "id": "00299180000154-2-000032/2025",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000015/2026",
+            "id": "00299180000154-2-000033/2025",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000016/2025",
+            "id": "00348003000110-2-000029/2026",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000016/2026",
+            "id": "00348003000110-2-000030/2026",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000017/2025",
+            "id": "00348003000110-2-000031/2026",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000017/2026",
+            "id": "00348003000110-2-000032/2026",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000018/2025",
+            "id": "00348003000110-2-000033/2026",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000019/2025",
+            "id": "00348003000110-2-000034/2026",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000020/2025",
+            "id": "00348003000110-2-000035/2026",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000021/2025",
+            "id": "00348003000110-2-000036/2026",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000022/2025",
+            "id": "00348003000110-2-000037/2026",
             "resource": "contrato",
             "error": "TimeoutError"
           },
           {
-            "id": "00299180000154-2-000023/2025",
+            "id": "00348003000110-2-000038/2026",
             "resource": "contrato",
             "error": "TimeoutError"
           }
