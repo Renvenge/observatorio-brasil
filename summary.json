@@ -1,59 +1,59 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-13T12:32:07.898006+00:00",
+  "generated_at": "2026-10-14T10:07:39.961497+00:00",
   "contracts": 74382,
   "works": 30763,
   "political_links": {
-    "reference_month": "2026-09",
+    "reference_month": "2026-10",
     "parts": [
       {
         "file": "Socios0.zip",
-        "checked_at": "2026-10-13T12:20:56.620386+00:00",
-        "rows_scanned": 10168742
+        "checked_at": "2026-10-14T09:54:14.595269+00:00",
+        "rows_scanned": 10323611
       },
       {
         "file": "Socios1.zip",
-        "checked_at": "2026-10-13T12:22:07.235078+00:00",
+        "checked_at": "2026-10-14T09:55:31.114092+00:00",
         "rows_scanned": 2019150
       },
       {
         "file": "Socios2.zip",
-        "checked_at": "2026-10-13T12:23:16.245533+00:00",
+        "checked_at": "2026-10-14T09:56:47.068675+00:00",
         "rows_scanned": 2019150
       },
       {
         "file": "Socios3.zip",
-        "checked_at": "2026-10-13T12:24:23.972746+00:00",
+        "checked_at": "2026-10-14T09:57:59.528812+00:00",
         "rows_scanned": 2019150
       },
       {
         "file": "Socios4.zip",
-        "checked_at": "2026-10-13T12:25:31.758502+00:00",
+        "checked_at": "2026-10-14T10:00:52.810098+00:00",
         "rows_scanned": 2019150
       },
       {
         "file": "Socios5.zip",
-        "checked_at": "2026-10-13T12:26:44.539643+00:00",
+        "checked_at": "2026-10-14T10:02:07.709413+00:00",
         "rows_scanned": 2019150
       },
       {
         "file": "Socios6.zip",
-        "checked_at": "2026-10-13T12:27:54.392714+00:00",
+        "checked_at": "2026-10-14T10:03:21.647595+00:00",
         "rows_scanned": 2019150
       },
       {
         "file": "Socios7.zip",
-        "checked_at": "2026-10-13T12:29:01.731754+00:00",
+        "checked_at": "2026-10-14T10:04:34.272300+00:00",
         "rows_scanned": 2019150
       },
       {
         "file": "Socios8.zip",
-        "checked_at": "2026-10-13T12:30:10.132465+00:00",
+        "checked_at": "2026-10-14T10:05:50.369353+00:00",
         "rows_scanned": 2019150
       },
       {
         "file": "Socios9.zip",
-        "checked_at": "2026-10-13T12:31:20.159178+00:00",
+        "checked_at": "2026-10-14T10:07:03.473575+00:00",
         "rows_scanned": 2019150
       }
     ],
@@ -77,8 +77,8 @@
     ],
     "method": "Nome completo normalizado e seis posições visíveis coincidentes. Nenhum dígito oculto é reconstruído.",
     "limitation": "Correspondência a conferir, não identidade confirmada. Candidatura não comprova mandato atual. QSA atual não prova vínculo na data do contrato.",
-    "contract_correspondences": 34,
-    "linked_contracts": 33
+    "contract_correspondences": 33,
+    "linked_contracts": 32
   },
   "findings": 3609,
   "runs": [
@@ -511,22 +511,22 @@
     },
     {
       "name": "receita_qsa",
-      "checked_at": "2026-10-13T12:31:20.170182+00:00",
+      "checked_at": "2026-10-14T10:07:03.484243+00:00",
       "status": "partial",
       "message": "Uma parte por ciclo; correspondências exigem investigação e não confirmam identidade.",
       "metadata": {
-        "reference_month": "2026-09",
+        "reference_month": "2026-10",
         "parts_scanned": 10,
         "total_parts": 10,
         "last_part": "Socios9.zip",
         "scanned": 2019150,
-        "matches": 2,
+        "matches": 0,
         "suppliers_in_scope": 25953
       }
     },
     {
       "name": "tse_2022",
-      "checked_at": "2026-10-13T12:15:03.197114+00:00",
+      "checked_at": "2026-10-14T09:48:06.613726+00:00",
       "status": "partial",
       "message": "Candidaturas não comprovam mandato atual; CPF ausente não é reconstruído.",
       "metadata": {
@@ -538,7 +538,7 @@
     },
     {
       "name": "tse_2024",
-      "checked_at": "2026-10-13T12:15:13.103832+00:00",
+      "checked_at": "2026-10-14T09:48:15.729489+00:00",
       "status": "partial",
       "message": "Candidaturas não comprovam mandato atual; CPF ausente não é reconstruído.",
       "metadata": {
@@ -550,7 +550,7 @@
     },
     {
       "name": "tse_2026",
-      "checked_at": "2026-10-13T12:15:14.649378+00:00",
+      "checked_at": "2026-10-14T09:48:17.015177+00:00",
       "status": "partial",
       "message": "Candidaturas não comprovam mandato atual; CPF ausente não é reconstruído.",
       "metadata": {
