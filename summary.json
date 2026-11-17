@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-16T13:24:29.077762+00:00",
+  "generated_at": "2026-11-17T14:18:36.975049+00:00",
   "contracts": 74382,
   "works": 30763,
   "political_links": {
@@ -8,12 +8,52 @@
     "parts": [
       {
         "file": "Socios0.zip",
-        "checked_at": "2026-11-16T13:22:18.498989+00:00",
+        "checked_at": "2026-11-17T14:16:42.684176+00:00",
         "rows_scanned": 10499446
       },
       {
         "file": "Socios1.zip",
-        "checked_at": "2026-11-16T13:23:43.909367+00:00",
+        "checked_at": "2026-11-17T14:18:00.174958+00:00",
+        "rows_scanned": 2019150
+      },
+      {
+        "file": "Socios2.zip",
+        "checked_at": "2026-11-17T14:00:02.272859+00:00",
+        "rows_scanned": 2019150
+      },
+      {
+        "file": "Socios3.zip",
+        "checked_at": "2026-11-17T14:02:46.046662+00:00",
+        "rows_scanned": 2019150
+      },
+      {
+        "file": "Socios4.zip",
+        "checked_at": "2026-11-17T14:04:10.194711+00:00",
+        "rows_scanned": 2019150
+      },
+      {
+        "file": "Socios5.zip",
+        "checked_at": "2026-11-17T14:05:26.824814+00:00",
+        "rows_scanned": 2019150
+      },
+      {
+        "file": "Socios6.zip",
+        "checked_at": "2026-11-17T14:06:41.099784+00:00",
+        "rows_scanned": 2019150
+      },
+      {
+        "file": "Socios7.zip",
+        "checked_at": "2026-11-17T14:07:56.086403+00:00",
+        "rows_scanned": 2019150
+      },
+      {
+        "file": "Socios8.zip",
+        "checked_at": "2026-11-17T14:09:18.413125+00:00",
+        "rows_scanned": 2019150
+      },
+      {
+        "file": "Socios9.zip",
+        "checked_at": "2026-11-17T14:10:34.068345+00:00",
         "rows_scanned": 2019150
       }
     ],
@@ -26,7 +66,7 @@
       },
       {
         "year": 2024,
-        "candidatures": 69297,
+        "candidatures": 69290,
         "usable_masks": 0
       },
       {
@@ -37,8 +77,8 @@
     ],
     "method": "Nome completo normalizado e seis posições visíveis coincidentes. Nenhum dígito oculto é reconstruído.",
     "limitation": "Correspondência a conferir, não identidade confirmada. Candidatura não comprova mandato atual. QSA atual não prova vínculo na data do contrato.",
-    "contract_correspondences": 15,
-    "linked_contracts": 15
+    "contract_correspondences": 33,
+    "linked_contracts": 32
   },
   "findings": 3609,
   "runs": [
@@ -471,16 +511,22 @@
     },
     {
       "name": "receita_qsa",
-      "checked_at": "2026-11-16T13:23:45.651879+00:00",
-      "status": "failed",
-      "message": "Atualização interrompida; última consulta preservada.",
+      "checked_at": "2026-11-17T14:18:00.185171+00:00",
+      "status": "partial",
+      "message": "Uma parte por ciclo; correspondências exigem investigação e não confirmam identidade.",
       "metadata": {
-        "error": "ParseError"
+        "reference_month": "2026-11",
+        "parts_scanned": 10,
+        "total_parts": 10,
+        "last_part": "Socios1.zip",
+        "scanned": 2019150,
+        "matches": 2,
+        "suppliers_in_scope": 25953
       }
     },
     {
       "name": "tse_2022",
-      "checked_at": "2026-11-16T13:15:32.957058+00:00",
+      "checked_at": "2026-11-17T13:58:17.678322+00:00",
       "status": "partial",
       "message": "Candidaturas não comprovam mandato atual; CPF ausente não é reconstruído.",
       "metadata": {
@@ -492,19 +538,19 @@
     },
     {
       "name": "tse_2024",
-      "checked_at": "2026-11-16T13:15:42.757538+00:00",
+      "checked_at": "2026-11-17T13:58:26.674893+00:00",
       "status": "partial",
       "message": "Candidaturas não comprovam mandato atual; CPF ausente não é reconstruído.",
       "metadata": {
         "rows_read": 463935,
-        "retained": 69297,
+        "retained": 69290,
         "usable_masks": 0,
         "source_url": "https://cdn.tse.jus.br/estatistica/sead/odsele/consulta_cand/consulta_cand_2024.zip"
       }
     },
     {
       "name": "tse_2026",
-      "checked_at": "2026-11-16T13:15:43.806867+00:00",
+      "checked_at": "2026-11-17T13:58:27.726010+00:00",
       "status": "partial",
       "message": "Candidaturas não comprovam mandato atual; CPF ausente não é reconstruído.",
       "metadata": {
