@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-23T15:45:19.250204+00:00",
+  "generated_at": "2026-11-24T15:26:15.100302+00:00",
   "contracts": 74382,
   "works": 30763,
   "political_links": {
@@ -511,22 +511,16 @@
     },
     {
       "name": "receita_qsa",
-      "checked_at": "2026-11-23T15:44:48.273001+00:00",
-      "status": "partial",
-      "message": "Uma parte por ciclo; correspondências exigem investigação e não confirmam identidade.",
+      "checked_at": "2026-11-24T15:25:35.306414+00:00",
+      "status": "failed",
+      "message": "Atualização interrompida; última consulta preservada.",
       "metadata": {
-        "reference_month": "2026-11",
-        "parts_scanned": 10,
-        "total_parts": 10,
-        "last_part": "Socios1.zip",
-        "scanned": 2019150,
-        "matches": 2,
-        "suppliers_in_scope": 25953
+        "error": "URLError"
       }
     },
     {
       "name": "tse_2022",
-      "checked_at": "2026-11-23T15:30:41.795220+00:00",
+      "checked_at": "2026-11-24T15:24:14.291026+00:00",
       "status": "partial",
       "message": "Candidaturas não comprovam mandato atual; CPF ausente não é reconstruído.",
       "metadata": {
@@ -538,7 +532,7 @@
     },
     {
       "name": "tse_2024",
-      "checked_at": "2026-11-23T15:30:49.074716+00:00",
+      "checked_at": "2026-11-24T15:24:23.601093+00:00",
       "status": "partial",
       "message": "Candidaturas não comprovam mandato atual; CPF ausente não é reconstruído.",
       "metadata": {
@@ -550,7 +544,7 @@
     },
     {
       "name": "tse_2026",
-      "checked_at": "2026-11-23T15:30:50.584228+00:00",
+      "checked_at": "2026-11-24T15:24:24.859307+00:00",
       "status": "partial",
       "message": "Candidaturas não comprovam mandato atual; CPF ausente não é reconstruído.",
       "metadata": {
